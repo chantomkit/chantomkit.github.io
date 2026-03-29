@@ -1,0 +1,1184 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="Tom Chan — Data Scientist at Tesco and AI Research Fellow at Apart Research. MSc CSML UCL (Distinction). Building production ML systems and researching LLM safety.">
+  <meta name="keywords" content="tom chan, man kit chan, data scientist, machine learning, tesco, UCL, apart research, LLM safety, recommender systems">
+  <title>Tom Chan · Data Scientist</title>
+
+  <link rel="icon" href="./assets/img/favicon-32x32.png" type="image/png" sizes="32x32">
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:ital,opsz,wght@0,14..32,300;0,14..32,400;0,14..32,500;0,14..32,600;0,14..32,700;1,14..32,400&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" crossorigin="anonymous">
+
+  <style>
+    /* =====================
+       RESET & TOKENS
+    ===================== */
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    /* Light theme (default) */
+    :root {
+      --bg:         #f5f6fa;
+      --card:       #ffffff;
+      --card-hover: #f3f4ff;
+      --border:     rgba(0,0,0,0.09);
+      --border-hi:  rgba(13,148,136,0.4);
+      --accent:     #0d9488;
+      --accent-2:   #14b8a6;
+      --accent-3:   #5eead4;
+      --green:      #16a34a;
+      --text:       #0d0e16;
+      --text-muted: #4a5068;
+      --text-sub:   #8490a8;
+      --shadow:     0 1px 3px rgba(0,0,0,0.07), 0 2px 10px rgba(0,0,0,0.04);
+      --blob-op:    0.1;
+      --dot-clr:    rgba(0,0,0,0.07);
+      --r:          12px;
+      --r-lg:       18px;
+      --ease:       cubic-bezier(0.4, 0, 0.2, 1);
+      --t:          0.22s;
+    }
+
+    /* Dark theme */
+    html.dark {
+      --bg:         #07070f;
+      --card:       rgba(255,255,255,0.03);
+      --card-hover: rgba(255,255,255,0.055);
+      --border:     rgba(255,255,255,0.07);
+      --border-hi:  rgba(20,184,166,0.45);
+      --accent:     #14b8a6;
+      --accent-2:   #2dd4bf;
+      --accent-3:   #99f6e4;
+      --green:      #22d3a5;
+      --text:       #e8eaf0;
+      --text-muted: #9096a8;
+      --text-sub:   #4e5566;
+      --shadow:     none;
+      --blob-op:    0.22;
+      --dot-clr:    rgba(255,255,255,0.055);
+    }
+
+    html { scroll-behavior: smooth; }
+
+    body {
+      font-family: 'Inter', system-ui, -apple-system, sans-serif;
+      background: var(--bg);
+      color: var(--text);
+      line-height: 1.6;
+      overflow-x: hidden;
+      -webkit-font-smoothing: antialiased;
+      transition: background 0.3s var(--ease), color 0.3s var(--ease);
+    }
+
+    ::-webkit-scrollbar { width: 5px; }
+    ::-webkit-scrollbar-track { background: var(--bg); }
+    ::-webkit-scrollbar-thumb { background: var(--accent); border-radius: 3px; }
+
+    /* =====================
+       THEME TOGGLE
+    ===================== */
+    /* =====================
+       SECTION NAV ARROWS
+    ===================== */
+    .section-nav {
+      position: fixed;
+      right: 1rem;
+      top: 50%;
+      transform: translateY(-50%);
+      z-index: 200;
+      display: flex;
+      flex-direction: column;
+      gap: 0.35rem;
+    }
+    .snav-btn {
+      width: 38px; height: 38px;
+      border-radius: 50%;
+      background: var(--card);
+      border: 1px solid var(--border);
+      box-shadow: var(--shadow);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      color: var(--text-muted);
+      font-size: 0.7rem;
+      transition: background var(--t) var(--ease), color var(--t) var(--ease),
+                  border-color var(--t) var(--ease), transform var(--t) var(--ease),
+                  opacity var(--t) var(--ease);
+    }
+    .snav-btn:hover {
+      background: var(--card-hover);
+      color: var(--accent);
+      border-color: var(--border-hi);
+      transform: scale(1.1);
+    }
+    .snav-btn:disabled {
+      opacity: 0.2;
+      cursor: default;
+      transform: none;
+      pointer-events: none;
+    }
+    @media (max-width: 600px) { .section-nav { display: none; } }
+
+    .theme-toggle {
+      position: fixed;
+      top: 1rem;
+      right: 1rem;
+      z-index: 300;
+      width: 38px; height: 38px;
+      border-radius: 50%;
+      background: var(--card);
+      border: 1px solid var(--border);
+      box-shadow: var(--shadow);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      color: var(--text-muted);
+      font-size: 0.88rem;
+      transition: background var(--t) var(--ease), color var(--t) var(--ease),
+                  border-color var(--t) var(--ease), transform var(--t) var(--ease);
+    }
+    .theme-toggle:hover {
+      color: var(--text);
+      border-color: var(--border-hi);
+      transform: scale(1.1);
+    }
+    /* Show moon (switch to dark) in light mode; show sun (switch to light) in dark mode */
+    .theme-toggle .icon-sun  { display: none; }
+    .theme-toggle .icon-moon { display: block; }
+    html.dark .theme-toggle .icon-sun  { display: block; }
+    html.dark .theme-toggle .icon-moon { display: none; }
+
+    /* =====================
+       HERO
+    ===================== */
+    #hero {
+      position: relative;
+      min-height: 100dvh;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      overflow: hidden;
+      padding: 2.5rem 1.5rem 3rem;
+    }
+
+    .hero-canvas {
+      position: absolute;
+      inset: 0;
+      pointer-events: none;
+    }
+    .blob {
+      position: absolute;
+      border-radius: 50%;
+      filter: blur(80px);
+      opacity: var(--blob-op);
+    }
+    .blob-1 {
+      width: 700px; height: 700px;
+      background: radial-gradient(circle, #14b8a6 0%, transparent 65%);
+      top: -200px; left: 50%;
+      transform: translateX(-50%);
+      animation: blobA 12s ease-in-out infinite alternate;
+    }
+    .blob-2 {
+      width: 380px; height: 380px;
+      background: radial-gradient(circle, #5eead4 0%, transparent 65%);
+      bottom: 60px; right: -60px;
+      animation: blobB 9s 3s ease-in-out infinite alternate;
+    }
+    .blob-3 {
+      width: 280px; height: 280px;
+      background: radial-gradient(circle, #38bdf8 0%, transparent 65%);
+      bottom: 120px; left: -50px;
+      animation: blobB 11s 1.5s ease-in-out infinite alternate;
+    }
+    @keyframes blobA {
+      from { transform: translateX(-50%) scale(1); }
+      to   { transform: translateX(-50%) scale(1.08) translateY(-25px); }
+    }
+    @keyframes blobB {
+      from { transform: scale(1); }
+      to   { transform: scale(1.12) translateY(-18px); }
+    }
+    .hero-dots {
+      position: absolute;
+      inset: 0;
+      background-image: radial-gradient(circle, var(--dot-clr) 1px, transparent 1px);
+      background-size: 28px 28px;
+      mask-image: radial-gradient(ellipse 70% 70% at 50% 40%, black 0%, transparent 75%);
+      -webkit-mask-image: radial-gradient(ellipse 70% 70% at 50% 40%, black 0%, transparent 75%);
+    }
+
+    .hero-body {
+      position: relative;
+      z-index: 1;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      text-align: center;
+      max-width: 660px;
+    }
+
+    .hero-greeting {
+      font-size: clamp(1.6rem, 4vw, 2.4rem);
+      font-weight: 600;
+      letter-spacing: -0.02em;
+      line-height: 1.25;
+      color: var(--text);
+      margin-bottom: 0.5rem;
+      animation: fadeUp 0.7s ease both;
+    }
+    .greeting-aside {
+      color: var(--accent);
+      font-style: italic;
+      font-weight: 500;
+    }
+    html.dark .greeting-aside {
+      color: var(--accent-2);
+    }
+
+    .hero-name {
+      font-size: clamp(0.95rem, 2vw, 1.05rem);
+      font-weight: 600;
+      color: var(--text-sub);
+      letter-spacing: 0.01em;
+      margin-bottom: 1.5rem;
+      animation: fadeUp 0.7s 0.08s ease both;
+    }
+    .grad {
+      background: linear-gradient(130deg, #0d9488 0%, #14b8a6 50%, #5eead4 100%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
+    html.dark .grad {
+      background: linear-gradient(130deg, var(--accent-2) 0%, var(--accent-3) 55%, #ccfbf1 100%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
+
+    .hero-roles {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: center;
+      gap: 0.5rem;
+      margin-bottom: 1.75rem;
+      animation: fadeUp 0.7s 0.1s ease both;
+    }
+    .role-pill {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.35rem;
+      padding: 0.25rem 0.75rem;
+      border-radius: 100px;
+      font-size: 0.8rem;
+      font-weight: 500;
+      border: 1px solid var(--border);
+      color: var(--text-muted);
+    }
+    .role-pill .dot { width: 5px; height: 5px; border-radius: 50%; flex-shrink: 0; }
+    .role-pill.tesco  { border-color: rgba(22,163,74,0.3);  color: #16a34a; }
+    .role-pill.tesco .dot  { background: #16a34a; }
+    .role-pill.apart  { border-color: rgba(13,148,136,0.3); color: var(--accent); }
+    .role-pill.apart .dot  { background: var(--accent); }
+    html.dark .role-pill.tesco  { border-color: rgba(0,130,66,0.35); color: #4ade80; }
+    html.dark .role-pill.tesco .dot  { background: #4ade80; }
+    html.dark .role-pill.apart  { border-color: rgba(20,184,166,0.35); color: var(--accent-2); }
+    html.dark .role-pill.apart .dot  { background: var(--accent-2); }
+
+    .hero-cta {
+      display: flex;
+      gap: 0.65rem;
+      justify-content: center;
+      flex-wrap: wrap;
+      animation: fadeUp 0.7s 0.3s ease both;
+    }
+
+    /* =====================
+       BUTTONS
+    ===================== */
+    .btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.4rem;
+      padding: 0.58rem 1.25rem;
+      border-radius: 8px;
+      font-family: inherit;
+      font-size: 0.86rem;
+      font-weight: 500;
+      text-decoration: none;
+      border: none;
+      cursor: pointer;
+      transition: transform var(--t) var(--ease), box-shadow var(--t) var(--ease),
+                  background var(--t) var(--ease), filter var(--t) var(--ease);
+    }
+    .btn-primary {
+      background: var(--accent);
+      color: #fff;
+      box-shadow: 0 0 22px rgba(20,184,166,0.28);
+    }
+    .btn-primary:hover {
+      filter: brightness(1.1);
+      box-shadow: 0 0 32px rgba(20,184,166,0.45);
+      transform: translateY(-2px);
+    }
+    .btn-ghost {
+      background: var(--card);
+      color: var(--text-muted);
+      border: 1px solid var(--border);
+      box-shadow: var(--shadow);
+    }
+    .btn-ghost:hover {
+      background: var(--card-hover);
+      color: var(--text);
+      border-color: var(--border-hi);
+      transform: translateY(-2px);
+    }
+
+    .scroll-caret {
+      position: absolute;
+      bottom: 1.75rem;
+      left: 50%;
+      transform: translateX(-50%);
+      animation: fadeIn 1s 1.2s ease both;
+    }
+    .scroll-caret span {
+      display: block;
+      width: 1px; height: 44px;
+      background: linear-gradient(to bottom, rgba(20,184,166,0.6), transparent);
+      animation: caretDrop 2s ease-in-out infinite;
+    }
+    @keyframes caretDrop {
+      0%,100% { transform: scaleY(0.4) translateY(-10px); opacity: 0.35; }
+      50%      { transform: scaleY(1) translateY(0); opacity: 1; }
+    }
+
+    /* =====================
+       SECTION SHARED
+    ===================== */
+    .section-wrap {
+      max-width: 860px;
+      margin: 0 auto;
+      padding: 5.5rem clamp(1.25rem, 4vw, 2rem);
+    }
+
+    .eyebrow {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.55rem;
+      font-size: 0.72rem;
+      font-weight: 700;
+      letter-spacing: 0.13em;
+      text-transform: uppercase;
+      color: var(--accent);
+      margin-bottom: 0.55rem;
+    }
+    .eyebrow::before {
+      content: '';
+      display: block;
+      width: 18px; height: 1px;
+      background: var(--accent);
+      flex-shrink: 0;
+    }
+
+    .section-heading {
+      font-size: clamp(1.6rem, 4vw, 2.3rem);
+      font-weight: 700;
+      letter-spacing: -0.035em;
+      line-height: 1.1;
+      margin-bottom: 0.7rem;
+    }
+
+    .underline-bar {
+      width: 34px; height: 3px;
+      background: linear-gradient(90deg, var(--accent), var(--accent-3));
+      border-radius: 2px;
+      margin-bottom: 2.6rem;
+    }
+
+    .reveal {
+      opacity: 0;
+      transform: translateY(22px);
+      transition: opacity 0.65s var(--ease), transform 0.65s var(--ease);
+    }
+    .reveal.in { opacity: 1; transform: none; }
+    .reveal-d1 { transition-delay: 0.07s; }
+    .reveal-d2 { transition-delay: 0.14s; }
+    .reveal-d3 { transition-delay: 0.21s; }
+    .reveal-d4 { transition-delay: 0.28s; }
+
+    /* =====================
+       ABOUT
+    ===================== */
+    .about-copy {
+      max-width: 680px;
+    }
+    .about-copy p {
+      color: var(--text-muted);
+      font-size: 1rem;
+      line-height: 1.85;
+      margin-bottom: 1rem;
+    }
+    .about-copy p:last-child { margin-bottom: 0; }
+    .kw { color: var(--accent); font-weight: 500; }
+    html.dark .kw { color: var(--accent-2); }
+
+    /* =====================
+       TIMELINE
+    ===================== */
+    .timeline {
+      position: relative;
+      padding-left: 1.6rem;
+      display: flex;
+      flex-direction: column;
+      gap: 1.15rem;
+    }
+    .timeline::before {
+      content: '';
+      position: absolute;
+      left: 0; top: 10px; bottom: 10px;
+      width: 1px;
+      background: linear-gradient(to bottom, var(--accent), rgba(20,184,166,0.08));
+    }
+
+    .t-card {
+      position: relative;
+      padding: 1.4rem 1.65rem;
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: var(--r-lg);
+      box-shadow: var(--shadow);
+      transition: background var(--t) var(--ease), border-color var(--t) var(--ease),
+                  transform var(--t) var(--ease), box-shadow var(--t) var(--ease);
+    }
+    .t-card:hover {
+      background: var(--card-hover);
+      border-color: var(--border-hi);
+      transform: translateX(4px);
+      box-shadow: 0 4px 24px rgba(20,184,166,0.1);
+    }
+    .t-card::before {
+      content: '';
+      position: absolute;
+      left: -1.85rem; top: 1.55rem;
+      width: 9px; height: 9px;
+      border-radius: 50%;
+      background: var(--accent);
+      box-shadow: 0 0 0 3px rgba(20,184,166,0.18), 0 0 10px rgba(20,184,166,0.28);
+    }
+
+    .t-header {
+      display: flex;
+      align-items: flex-start;
+      justify-content: space-between;
+      gap: 1rem;
+      flex-wrap: wrap;
+      margin-bottom: 0.25rem;
+    }
+    .t-period {
+      font-size: 0.7rem;
+      font-weight: 700;
+      letter-spacing: 0.07em;
+      text-transform: uppercase;
+      color: var(--accent);
+      flex-shrink: 0;
+    }
+    .t-title {
+      font-size: 1rem;
+      font-weight: 600;
+      color: var(--text);
+      line-height: 1.3;
+    }
+    .t-sub {
+      font-size: 0.86rem;
+      color: var(--text-muted);
+      margin-bottom: 0.75rem;
+    }
+    .t-note {
+      font-size: 0.78rem;
+      color: var(--text-sub);
+      margin-bottom: 0.75rem;
+      font-style: italic;
+    }
+
+    .t-bullets {
+      list-style: none;
+      display: flex;
+      flex-direction: column;
+      gap: 0.45rem;
+      margin-top: 0.6rem;
+    }
+    .t-bullets li {
+      font-size: 0.845rem;
+      color: var(--text-muted);
+      padding-left: 1.1rem;
+      position: relative;
+      line-height: 1.65;
+    }
+    .t-bullets li::before {
+      content: '→';
+      position: absolute;
+      left: 0;
+      color: var(--accent);
+      font-size: 0.72rem;
+      top: 0.15rem;
+    }
+    .metric { color: var(--accent); font-weight: 600; }
+    html.dark .metric { color: var(--accent-2); }
+
+    .t-group {
+      font-size: 0.75rem;
+      font-weight: 600;
+      letter-spacing: 0.06em;
+      text-transform: uppercase;
+      color: var(--text-sub);
+      margin: 0.85rem 0 0.3rem;
+    }
+    .t-group:first-of-type { margin-top: 0.6rem; }
+
+    .tags {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.38rem;
+      margin-top: 0.85rem;
+    }
+    .tag {
+      padding: 0.2rem 0.62rem;
+      background: rgba(20,184,166,0.07);
+      border: 1px solid rgba(20,184,166,0.14);
+      border-radius: 5px;
+      font-size: 0.7rem;
+      color: var(--text-muted);
+      transition: background var(--t), color var(--t);
+    }
+    .t-card:hover .tag { background: rgba(20,184,166,0.12); color: var(--accent); }
+    html.dark .t-card:hover .tag { color: var(--accent-3); }
+
+    /* =====================
+       RESEARCH CARDS
+    ===================== */
+    .research-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(min(100%, 380px), 1fr));
+      gap: 1.1rem;
+    }
+
+    .r-card {
+      padding: 1.6rem;
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: var(--r-lg);
+      box-shadow: var(--shadow);
+      display: flex;
+      flex-direction: column;
+      gap: 0.8rem;
+      position: relative;
+      overflow: hidden;
+      transition: background var(--t) var(--ease), border-color var(--t) var(--ease),
+                  transform var(--t) var(--ease), box-shadow var(--t) var(--ease);
+    }
+    .r-card::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(135deg, rgba(20,184,166,0.05) 0%, transparent 60%);
+      opacity: 0;
+      transition: opacity var(--t) var(--ease);
+      pointer-events: none;
+    }
+    .r-card:hover {
+      background: var(--card-hover);
+      border-color: var(--border-hi);
+      transform: translateY(-4px);
+      box-shadow: 0 10px 36px rgba(20,184,166,0.12), 0 2px 16px rgba(0,0,0,0.08);
+    }
+    .r-card:hover::before { opacity: 1; }
+
+    .r-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
+    }
+    .r-icon {
+      width: 40px; height: 40px;
+      border-radius: 10px;
+      background: rgba(20,184,166,0.1);
+      border: 1px solid rgba(20,184,166,0.2);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 1.1rem;
+      flex-shrink: 0;
+    }
+    .r-badge {
+      font-size: 0.7rem;
+      font-weight: 600;
+      padding: 0.2rem 0.55rem;
+      border-radius: 4px;
+      background: rgba(250,204,21,0.1);
+      border: 1px solid rgba(250,204,21,0.25);
+      color: #b45309;
+    }
+    html.dark .r-badge { color: #fbbf24; }
+    .r-title {
+      font-size: 0.98rem;
+      font-weight: 600;
+      color: var(--text);
+      line-height: 1.35;
+    }
+    .r-org {
+      font-size: 0.78rem;
+      color: var(--accent);
+      font-weight: 500;
+    }
+    html.dark .r-org { color: var(--accent-2); }
+    .r-desc {
+      font-size: 0.845rem;
+      color: var(--text-muted);
+      line-height: 1.7;
+    }
+    .r-stats {
+      display: flex;
+      gap: 1.25rem;
+      flex-wrap: wrap;
+      padding: 0.7rem 0.85rem;
+      background: rgba(20,184,166,0.05);
+      border-radius: 8px;
+      border: 1px solid rgba(20,184,166,0.12);
+    }
+    .stat { display: flex; flex-direction: column; gap: 0.15rem; }
+    .stat-val {
+      font-size: 1rem;
+      font-weight: 700;
+      color: var(--accent);
+      letter-spacing: -0.02em;
+    }
+    html.dark .stat-val { color: var(--accent-2); }
+    .stat-lbl {
+      font-size: 0.68rem;
+      color: var(--text-sub);
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+    }
+
+    /* =====================
+       SKILLS
+    ===================== */
+    .skills-stack { display: flex; flex-direction: column; gap: 0.9rem; }
+
+    .skill-row {
+      padding: 1.25rem 1.55rem;
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: var(--r);
+      box-shadow: var(--shadow);
+      transition: background var(--t) var(--ease), border-color var(--t) var(--ease);
+    }
+    .skill-row:hover { background: var(--card-hover); border-color: var(--border-hi); }
+
+    .skill-cat {
+      font-size: 0.69rem;
+      font-weight: 700;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      color: var(--text-sub);
+      margin-bottom: 0.6rem;
+    }
+    .chips { display: flex; flex-wrap: wrap; gap: 0.42rem; }
+    .chip {
+      padding: 0.28rem 0.78rem;
+      background: rgba(0,0,0,0.04);
+      border: 1px solid var(--border);
+      border-radius: 100px;
+      font-size: 0.81rem;
+      color: var(--text-muted);
+      cursor: default;
+      transition: background var(--t), color var(--t), border-color var(--t), transform var(--t);
+    }
+    html.dark .chip { background: rgba(255,255,255,0.035); border-color: rgba(255,255,255,0.075); }
+    .chip:hover {
+      background: rgba(20,184,166,0.1);
+      border-color: rgba(20,184,166,0.32);
+      color: var(--accent);
+      transform: translateY(-1px);
+    }
+    html.dark .chip:hover { color: var(--accent-2); }
+
+    /* =====================
+       FOOTER
+    ===================== */
+    footer {
+      border-top: 1px solid var(--border);
+      padding: 2rem clamp(1.25rem, 4vw, 2rem);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      flex-wrap: wrap;
+      gap: 1rem;
+    }
+    .footer-copy { font-size: 0.78rem; color: var(--text-sub); }
+    .footer-copy a { color: var(--accent); text-decoration: none; }
+    html.dark .footer-copy a { color: var(--accent-2); }
+    .footer-copy a:hover { text-decoration: underline; }
+    .footer-socials { display: flex; gap: 0.65rem; }
+    .footer-socials a {
+      width: 33px; height: 33px;
+      border-radius: 8px;
+      background: var(--card);
+      border: 1px solid var(--border);
+      box-shadow: var(--shadow);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: var(--text-muted);
+      font-size: 0.82rem;
+      text-decoration: none;
+      transition: background var(--t), color var(--t), border-color var(--t);
+    }
+    .footer-socials a:hover {
+      background: rgba(20,184,166,0.1);
+      border-color: rgba(20,184,166,0.32);
+      color: var(--accent);
+    }
+    html.dark .footer-socials a:hover { color: var(--accent-2); }
+
+    /* =====================
+       KEYFRAMES
+    ===================== */
+    @keyframes fadeUp {
+      from { opacity: 0; transform: translateY(18px); }
+      to   { opacity: 1; transform: none; }
+    }
+    @keyframes fadeIn {
+      from { opacity: 0; }
+      to   { opacity: 1; }
+    }
+
+    /* =====================
+       RESPONSIVE
+    ===================== */
+    @media (max-width: 600px) {
+      .t-header { flex-direction: column; gap: 0.2rem; }
+      footer { flex-direction: column; align-items: center; text-align: center; }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- SECTION NAV -->
+  <div class="section-nav">
+    <button class="snav-btn" id="nav-up" aria-label="Previous section">
+      <i class="fas fa-chevron-up"></i>
+    </button>
+    <button class="snav-btn" id="nav-down" aria-label="Next section">
+      <i class="fas fa-chevron-down"></i>
+    </button>
+  </div>
+
+  <!-- THEME TOGGLE -->
+  <button class="theme-toggle" id="theme-toggle" aria-label="Toggle theme">
+    <i class="fas fa-sun icon-sun"></i>
+    <i class="fas fa-moon icon-moon"></i>
+  </button>
+
+  <!-- HERO -->
+  <section id="hero">
+    <div class="hero-canvas" aria-hidden="true">
+      <div class="blob blob-1"></div>
+      <div class="blob blob-2"></div>
+      <div class="blob blob-3"></div>
+      <div class="hero-dots"></div>
+    </div>
+
+    <div class="hero-body">
+
+      <h1 class="hero-greeting">Hey there, you've found the right corner of the internet — <span class="greeting-aside">Converged nicely.</span></h1>
+      <p class="hero-name">Tom <span class="grad">Chan</span></p>
+
+      <div class="hero-roles">
+        <span class="role-pill tesco">
+          <span class="dot"></span>
+          Data Scientist &middot; Tesco
+        </span>
+        <span class="role-pill apart">
+          <span class="dot"></span>
+          Research Fellow &middot; Apart Research
+        </span>
+      </div>
+
+      <div class="hero-cta">
+        <a href="https://github.com/chantomkit" target="_blank" rel="noopener" class="btn btn-ghost">
+          <i class="fab fa-github"></i> GitHub
+        </a>
+        <a href="https://www.linkedin.com/in/chantomkit/" target="_blank" rel="noopener" class="btn btn-ghost">
+          <i class="fab fa-linkedin"></i> LinkedIn
+        </a>
+      </div>
+    </div>
+
+    <div class="scroll-caret" aria-hidden="true"><span></span></div>
+  </section>
+
+  <!-- ABOUT -->
+  <section id="about">
+    <div class="section-wrap">
+      <div class="reveal">
+        <span class="eyebrow">About</span>
+        <h2 class="section-heading">👋 Who I Am</h2>
+        <div class="underline-bar"></div>
+        <div class="about-copy">
+          <p>
+            I'm a <span class="kw">Data Scientist at Tesco</span> in London, where I own large-scale personalisation systems on Azure ML — from reward allocation serving <span class="kw">6M+ customers</span> across the UK and Ireland, to contextual bandit models that delivered a <span class="kw">20%+ CTR uplift</span> in live A/B tests.
+          </p>
+          <p>
+            Alongside industry work, I'm a <span class="kw">Research Fellow at Apart Research</span>, working on LLM safety — building mechanistically interpretable safety judges and applying quality-diversity search to adversarial red teaming across high-stakes domains.
+          </p>
+          <p>
+            My foundation is an <span class="kw">MSc in Computational Statistics and Machine Learning from UCL</span> (Distinction, 82.3%) and a <span class="kw">BSc in Physics from CUHK</span> (First Class, 3.7 GPA). I gravitate toward probabilistic modelling, production ML engineering, and anything at the intersection of maths and real-world impact.
+          </p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- EXPERIENCE -->
+  <section id="experience">
+    <div class="section-wrap">
+      <div class="reveal">
+        <span class="eyebrow">Experience</span>
+        <h2 class="section-heading">💼 Where I've Worked</h2>
+        <div class="underline-bar"></div>
+        <div class="timeline">
+
+          <div class="t-card reveal reveal-d1">
+            <div class="t-header">
+              <div>
+                <div class="t-title">Data Scientist &mdash; Tesco</div>
+                <div class="t-sub">London, UK</div>
+              </div>
+              <div class="t-period">Jan 2025 &ndash; Present</div>
+            </div>
+            <div class="t-group">Personalised Rewards</div>
+            <ul class="t-bullets">
+              <li>Own and continuously improve production reward allocation systems on Azure ML, serving <span class="metric">6M+ customers</span> across the UK and Ireland.</li>
+              <li>Architected an A/B testing and model-variants framework from scratch, enabling statistically robust experimentation against business KPIs.</li>
+            </ul>
+            <div class="t-group">Content Orchestration</div>
+            <ul class="t-bullets">
+              <li>Built end-to-end ML pipelines for online training and serving contextual bandit models, with update frequencies from 15-minute to daily cadences.</li>
+              <li>A/B tested contextual bandits for content personalisation at scale — delivered <span class="metric">20%+ CTR uplift</span> over a popularity baseline across live web and app traffic.</li>
+            </ul>
+            <div class="tags">
+              <span class="tag">Azure ML</span><span class="tag">Contextual Bandits</span><span class="tag">A/B Testing</span><span class="tag">Recommendation Systems</span><span class="tag">MLflow</span>
+            </div>
+          </div>
+
+          <div class="t-card reveal reveal-d2">
+            <div class="t-header">
+              <div>
+                <div class="t-title">Data Scientist &mdash; Intact Financial</div>
+                <div class="t-sub">Hong Kong</div>
+              </div>
+              <div class="t-period">Oct &ndash; Dec 2024</div>
+            </div>
+            <ul class="t-bullets">
+              <li>Built end-to-end document intelligence pipelines using Amazon Textract and RAG-enabled LLMs (InternVL, LLaMA, GPT-4o), processing <span class="metric">10k+ documents/month</span>.</li>
+              <li>Developed evaluation datasets and business-defined metrics for entity extraction, achieving <span class="metric">80%+ overall accuracy</span>.</li>
+            </ul>
+            <div class="tags">
+              <span class="tag">RAG</span><span class="tag">LLMs</span><span class="tag">Amazon Textract</span><span class="tag">Document Intelligence</span><span class="tag">LangChain</span>
+            </div>
+          </div>
+
+          <div class="t-card reveal reveal-d3">
+            <div class="t-header">
+              <div>
+                <div class="t-title">Data Science Intern &mdash; Intact Financial</div>
+                <div class="t-sub">Hong Kong</div>
+              </div>
+              <div class="t-period">May &ndash; Aug 2023</div>
+            </div>
+            <ul class="t-bullets">
+              <li>Developed data pipelines and ML components for a multi-document parsing and entity extraction system.</li>
+            </ul>
+            <div class="tags">
+              <span class="tag">Python</span><span class="tag">NLP</span><span class="tag">Data Pipelines</span>
+            </div>
+          </div>
+
+          <div class="t-card reveal reveal-d3">
+            <div class="t-header">
+              <div>
+                <div class="t-title">AI Research Intern &mdash; ASTRI</div>
+                <div class="t-sub">Hong Kong</div>
+              </div>
+              <div class="t-period">Jun &ndash; Aug 2022</div>
+            </div>
+            <ul class="t-bullets">
+              <li>Researched convolutional variational autoencoders for handwriting synthesis from real handwriting images.</li>
+            </ul>
+            <div class="tags">
+              <span class="tag">VAE</span><span class="tag">Generative Models</span><span class="tag">PyTorch</span>
+            </div>
+          </div>
+
+          <div class="t-card reveal reveal-d4">
+            <div class="t-header">
+              <div>
+                <div class="t-title">Machine Learning Placement &mdash; Hong Kong Observatory</div>
+                <div class="t-sub">Hong Kong</div>
+              </div>
+              <div class="t-period">Jan &ndash; Dec 2021</div>
+            </div>
+            <ul class="t-bullets">
+              <li>Developed ensemble ML models that outperformed in-house models for aviation turbulence forecasting.</li>
+            </ul>
+            <div class="tags">
+              <span class="tag">Ensemble Methods</span><span class="tag">XGBoost</span><span class="tag">Time Series</span>
+            </div>
+          </div>
+
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- RESEARCH -->
+  <section id="research">
+    <div class="section-wrap">
+      <div class="reveal">
+        <span class="eyebrow">LLM Safety</span>
+        <h2 class="section-heading">🔬 LLM Safety Research</h2>
+        <div class="underline-bar"></div>
+        <div class="research-grid">
+
+          <div class="r-card reveal reveal-d1">
+            <div class="r-header">
+              <div class="r-icon">&#x1F6E1;</div>
+              <span class="r-badge">&#x1F3C6; Top 4 &mdash; Hackathon 2025</span>
+            </div>
+            <div>
+              <div class="r-org">Apart Research</div>
+              <div class="r-title">Guardian-Loop: Mechanistically Interpretable Micro-LLM-Judges</div>
+            </div>
+            <div class="r-desc">
+              Developed an interpretable LLM safety judge using a fine-tuned Llama-3.1-8B classifier for prompt risk filtering. Top 4 winning team at the 2025 Martian Mechanistic Router Interpretability Hackathon.
+            </div>
+            <div class="r-stats">
+              <div class="stat">
+                <span class="stat-val">85%</span>
+                <span class="stat-lbl">Accuracy</span>
+              </div>
+              <div class="stat">
+                <span class="stat-val">94.6%</span>
+                <span class="stat-lbl">AUC-ROC</span>
+              </div>
+              <div class="stat">
+                <span class="stat-val">Llama 3.1</span>
+                <span class="stat-lbl">Base Model</span>
+              </div>
+            </div>
+            <div class="tags">
+              <span class="tag">Mechanistic Interpretability</span><span class="tag">LLM Safety</span><span class="tag">Fine-tuning</span><span class="tag">Llama</span>
+            </div>
+          </div>
+
+          <div class="r-card reveal reveal-d2">
+            <div class="r-header">
+              <div class="r-icon">&#x1F9EC;</div>
+            </div>
+            <div>
+              <div class="r-org">Apart Research</div>
+              <div class="r-title">Factored Safety: Domain-Aware LLM Red Teaming with Risk&ndash;Tactic Decomposition</div>
+            </div>
+            <div class="r-desc">
+              Research on Quality-Diversity (QD) search algorithms to optimise adversarial prompts across finance, law, cybersecurity, and education domains. Identifies failure scenarios and bias-sensitive edge cases in production LLMs.
+            </div>
+            <div class="tags">
+              <span class="tag">Red Teaming</span><span class="tag">Quality-Diversity Search</span><span class="tag">LLM Safety</span><span class="tag">Adversarial ML</span>
+            </div>
+          </div>
+
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- EDUCATION -->
+  <section id="education">
+    <div class="section-wrap">
+      <div class="reveal">
+        <span class="eyebrow">Education</span>
+        <h2 class="section-heading">🎓 Academic Background</h2>
+        <div class="underline-bar"></div>
+        <div class="timeline">
+
+          <div class="t-card reveal reveal-d1">
+            <div class="t-header">
+              <div>
+                <div class="t-title">MSc Computational Statistics and Machine Learning</div>
+                <div class="t-sub">University College London (UCL) &mdash; London, UK</div>
+              </div>
+              <div class="t-period">Sep 2023 &ndash; Sep 2024</div>
+            </div>
+            <div class="t-note">Distinction &middot; 82.3% &middot; Thesis: <em>"Graph Neural Networks for Personalisation"</em></div>
+            <div class="tags">
+              <span class="tag">Bayesian Learning</span><span class="tag">Graphical Models</span><span class="tag">Deep Learning</span><span class="tag">NLP</span><span class="tag">Reinforcement Learning</span><span class="tag">Data Mining</span>
+            </div>
+          </div>
+
+          <div class="t-card reveal reveal-d2">
+            <div class="t-header">
+              <div>
+                <div class="t-title">BSc Physics &mdash; Minor in Statistics</div>
+                <div class="t-sub">The Chinese University of Hong Kong (CUHK) &mdash; Hong Kong</div>
+              </div>
+              <div class="t-period">Aug 2018 &ndash; Jul 2023</div>
+            </div>
+            <div class="t-note">First Class &middot; 3.7 / 4.0 GPA &middot; Thesis: <em>"Machine Learning for Potential Energy and Force Fields in Material Systems"</em></div>
+            <div class="tags">
+              <span class="tag">Theoretical Physics</span><span class="tag">Computational Physics</span><span class="tag">Multivariate Analysis</span><span class="tag">Time Series</span><span class="tag">Recommender Systems</span>
+            </div>
+          </div>
+
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- SKILLS -->
+  <section id="skills">
+    <div class="section-wrap">
+      <div class="reveal">
+        <span class="eyebrow">Skills</span>
+        <h2 class="section-heading">🛠️ What I Work With</h2>
+        <div class="underline-bar"></div>
+        <div class="skills-stack">
+
+          <div class="skill-row reveal reveal-d1">
+            <div class="skill-cat">Machine Learning</div>
+            <div class="chips">
+              <span class="chip">PyTorch</span>
+              <span class="chip">scikit-learn</span>
+              <span class="chip">LightGBM</span>
+              <span class="chip">XGBoost</span>
+              <span class="chip">TensorFlow</span>
+              <span class="chip">JAX</span>
+              <span class="chip">PyMC</span>
+              <span class="chip">statsmodels</span>
+            </div>
+          </div>
+
+          <div class="skill-row reveal reveal-d2">
+            <div class="skill-cat">Cloud &amp; MLOps</div>
+            <div class="chips">
+              <span class="chip">Azure ML</span>
+              <span class="chip">MLflow</span>
+              <span class="chip">AWS</span>
+              <span class="chip">Airflow</span>
+              <span class="chip">Spark</span>
+              <span class="chip">Hadoop</span>
+              <span class="chip">Docker</span>
+              <span class="chip">Git</span>
+            </div>
+          </div>
+
+          <div class="skill-row reveal reveal-d3">
+            <div class="skill-cat">LLM &amp; NLP</div>
+            <div class="chips">
+              <span class="chip">Transformers</span>
+              <span class="chip">LangChain</span>
+              <span class="chip">Pydantic</span>
+              <span class="chip">DeepEval</span>
+            </div>
+          </div>
+
+          <div class="skill-row reveal reveal-d3">
+            <div class="skill-cat">Programming Languages</div>
+            <div class="chips">
+              <span class="chip">Python</span>
+              <span class="chip">SQL</span>
+              <span class="chip">Bash</span>
+            </div>
+          </div>
+
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- FOOTER -->
+  <footer>
+    <p class="footer-copy">
+      &copy; 2025 <a href="https://github.com/chantomkit">Tom Chan</a>
+    </p>
+    <div class="footer-socials">
+      <a href="https://github.com/chantomkit" target="_blank" rel="noopener" aria-label="GitHub">
+        <i class="fab fa-github"></i>
+      </a>
+      <a href="https://www.linkedin.com/in/chantomkit/" target="_blank" rel="noopener" aria-label="LinkedIn">
+        <i class="fab fa-linkedin"></i>
+      </a>
+    </div>
+  </footer>
+
+  <script>
+    // Scroll-driven reveal
+    const io = new IntersectionObserver(
+      entries => entries.forEach(e => {
+        if (e.isIntersecting) { e.target.classList.add('in'); io.unobserve(e.target); }
+      }),
+      { threshold: 0.08, rootMargin: '0px 0px -40px 0px' }
+    );
+    document.querySelectorAll('.reveal').forEach(el => io.observe(el));
+
+    // Section nav arrows
+    const sectionIds = ['hero', 'about', 'experience', 'research', 'education', 'skills'];
+    const sectionEls = sectionIds.map(id => document.getElementById(id));
+    const navUp   = document.getElementById('nav-up');
+    const navDown = document.getElementById('nav-down');
+
+    function getCurrentIdx() {
+      const mid = window.scrollY + window.innerHeight * 0.4;
+      let idx = 0;
+      sectionEls.forEach((el, i) => { if (el.offsetTop <= mid) idx = i; });
+      return idx;
+    }
+
+    function updateNavBtns() {
+      const idx = getCurrentIdx();
+      navUp.disabled   = idx === 0;
+      navDown.disabled = idx === sectionEls.length - 1;
+    }
+
+    navUp.addEventListener('click', () => {
+      const idx = getCurrentIdx();
+      if (idx > 0) sectionEls[idx - 1].scrollIntoView({ behavior: 'smooth' });
+    });
+    navDown.addEventListener('click', () => {
+      const idx = getCurrentIdx();
+      if (idx < sectionEls.length - 1) sectionEls[idx + 1].scrollIntoView({ behavior: 'smooth' });
+    });
+
+    window.addEventListener('scroll', updateNavBtns, { passive: true });
+    updateNavBtns();
+
+    // Theme toggle — default light, persisted in localStorage
+    const html = document.documentElement;
+    const toggle = document.getElementById('theme-toggle');
+    if (localStorage.getItem('theme') === 'dark') html.classList.add('dark');
+    toggle.addEventListener('click', () => {
+      html.classList.toggle('dark');
+      localStorage.setItem('theme', html.classList.contains('dark') ? 'dark' : 'light');
+    });
+  </script>
+
+</body>
+</html>
