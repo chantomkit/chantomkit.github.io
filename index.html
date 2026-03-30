@@ -668,6 +668,49 @@
       letter-spacing: 0.05em;
     }
 
+    .research-category { margin-top: 2.2rem; }
+    .r-cat-label {
+      font-size: 0.78rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.09em;
+      color: var(--accent);
+      display: flex;
+      align-items: center;
+      gap: 0.65rem;
+      margin-bottom: 1rem;
+    }
+    html.dark .r-cat-label { color: var(--accent-2); }
+    .r-cat-label::after {
+      content: '';
+      flex: 1;
+      height: 1px;
+      background: var(--border);
+    }
+    .r-pub-meta {
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+      flex-wrap: wrap;
+    }
+    .r-journal {
+      font-size: 0.75rem;
+      font-weight: 500;
+      color: var(--text-sub);
+    }
+    .r-pub-link {
+      font-size: 0.72rem;
+      font-weight: 600;
+      color: var(--accent);
+      text-decoration: none;
+      padding: 0.15rem 0.45rem;
+      border-radius: 4px;
+      border: 1px solid rgba(20,184,166,0.3);
+      transition: background var(--t) var(--ease), color var(--t) var(--ease);
+    }
+    .r-pub-link:hover { background: rgba(20,184,166,0.1); }
+    html.dark .r-pub-link { color: var(--accent-2); border-color: rgba(45,212,191,0.3); }
+
     /* =====================
        SKILLS
     ===================== */
@@ -954,59 +997,103 @@
   <section id="research">
     <div class="section-wrap">
       <div class="reveal">
-        <span class="eyebrow">LLM Safety</span>
-        <h2 class="section-heading">🔬 LLM Safety Research</h2>
+        <span class="eyebrow">Publications &amp; Projects</span>
+        <h2 class="section-heading">🔬 Research</h2>
         <div class="underline-bar"></div>
-        <div class="research-grid">
 
-          <div class="r-card reveal reveal-d1">
-            <div class="r-header">
-              <div class="r-icon">&#x1F6E1;</div>
-              <span class="r-badge">&#x1F3C6; Top 4 &mdash; Hackathon 2025</span>
-            </div>
-            <div>
-              <div class="r-org">Apart Research</div>
-              <div class="r-title">Guardian-Loop: Mechanistically Interpretable Micro-LLM-Judges</div>
-            </div>
-            <div class="r-desc">
-              Developed an interpretable LLM safety judge using a fine-tuned Llama-3.1-8B classifier for prompt risk filtering. Top 4 winning team at the 2025 Martian Mechanistic Router Interpretability Hackathon.
-            </div>
-            <div class="r-stats">
-              <div class="stat">
-                <span class="stat-val">85%</span>
-                <span class="stat-lbl">Accuracy</span>
+        <!-- LLM Safety -->
+        <div class="research-category">
+          <div class="r-cat-label">LLM Safety</div>
+          <div class="research-grid">
+
+            <div class="r-card reveal reveal-d1">
+              <div class="r-header">
+                <div class="r-icon">&#x1F9EC;</div>
+                <span class="r-badge">Accepted &mdash; <a href="https://tais2026.cc/" target="_blank" rel="noopener" style="color:inherit;text-decoration:underline;">TAIS 2026</a></span>
               </div>
-              <div class="stat">
-                <span class="stat-val">94.6%</span>
-                <span class="stat-lbl">AUC-ROC</span>
+              <div>
+                <div class="r-org">Apart Research</div>
+                <div class="r-title">Factored Safety: Domain-Aware LLM Red Teaming with Risk&ndash;Tactic Decomposition</div>
               </div>
-              <div class="stat">
-                <span class="stat-val">Llama 3.1</span>
-                <span class="stat-lbl">Base Model</span>
+              <div class="r-desc">
+                Research on Quality-Diversity (QD) search algorithms to optimise adversarial prompts across finance, law, cybersecurity, and education domains. Identifies failure scenarios and bias-sensitive edge cases in production LLMs.
+              </div>
+              <div class="tags">
+                <span class="tag">Red Teaming</span><span class="tag">Quality-Diversity Search</span><span class="tag">LLM Safety</span><span class="tag">Adversarial ML</span>
               </div>
             </div>
-            <div class="tags">
-              <span class="tag">Mechanistic Interpretability</span><span class="tag">LLM Safety</span><span class="tag">Fine-tuning</span><span class="tag">Llama</span>
+
+            <div class="r-card reveal reveal-d2">
+              <div class="r-header">
+                <div class="r-icon">&#x1F6E1;</div>
+                <span class="r-badge">&#x1F3C6; Top 4 &mdash; Hackathon 2025</span>
+              </div>
+              <div>
+                <div class="r-pub-meta">
+                  <div class="r-org">Apart Research</div>
+                  <a href="https://apartresearch.com/project/guardianloop-mechanistically-interpretable-microjudges-with-adversarial-selfimprovement-1b2p" target="_blank" rel="noopener" class="r-pub-link">Project ↗</a>
+                </div>
+                <div class="r-title">Guardian-Loop: Mechanistically Interpretable Micro-LLM-Judges</div>
+              </div>
+              <div class="r-desc">
+                Developed an interpretable LLM safety judge using a fine-tuned Llama-3.1-8B classifier for prompt risk filtering. Top 4 winning team at the 2025 Martian Mechanistic Router Interpretability Hackathon.
+              </div>
+              <div class="tags">
+                <span class="tag">Mechanistic Interpretability</span><span class="tag">LLM Safety</span><span class="tag">Fine-tuning</span><span class="tag">Llama</span>
+              </div>
             </div>
+
           </div>
-
-          <div class="r-card reveal reveal-d2">
-            <div class="r-header">
-              <div class="r-icon">&#x1F9EC;</div>
-            </div>
-            <div>
-              <div class="r-org">Apart Research</div>
-              <div class="r-title">Factored Safety: Domain-Aware LLM Red Teaming with Risk&ndash;Tactic Decomposition</div>
-            </div>
-            <div class="r-desc">
-              Research on Quality-Diversity (QD) search algorithms to optimise adversarial prompts across finance, law, cybersecurity, and education domains. Identifies failure scenarios and bias-sensitive edge cases in production LLMs.
-            </div>
-            <div class="tags">
-              <span class="tag">Red Teaming</span><span class="tag">Quality-Diversity Search</span><span class="tag">LLM Safety</span><span class="tag">Adversarial ML</span>
-            </div>
-          </div>
-
         </div>
+
+        <!-- Computational Physics -->
+        <div class="research-category reveal">
+          <div class="r-cat-label">Computational Physics</div>
+          <div class="research-grid">
+
+            <div class="r-card reveal reveal-d1">
+              <div class="r-header">
+                <div class="r-icon">&#x269B;&#xFE0F;</div>
+                <span class="r-badge">&#x1F4D8; J. Phys. Chem. Lett. 2024</span>
+              </div>
+              <div>
+                <div class="r-pub-meta">
+                  <div class="r-org">The Journal of Physical Chemistry Letters</div>
+                  <a href="https://pubs.acs.org/doi/full/10.1021/acs.jpclett.3c03250" target="_blank" rel="noopener" class="r-pub-link">DOI ↗</a>
+                </div>
+                <div class="r-title">Parameter-Free and Electron Counting Satisfied Material Representation for Machine Learning Potential Energy and Force Fields</div>
+              </div>
+              <div class="r-desc">
+                Proposed a parameter-free volume element representation satisfying the electron counting model for accurate ML potential energy and force field fitting of hexagonal BN and bulk Si. Dataset ~10× smaller than standard MD-based methods.
+              </div>
+              <div class="tags">
+                <span class="tag">ML Force Fields</span><span class="tag">Materials Science</span><span class="tag">DFT</span><span class="tag">2nd Author</span>
+              </div>
+            </div>
+
+            <div class="r-card reveal reveal-d2">
+              <div class="r-header">
+                <div class="r-icon">&#x1F52E;</div>
+                <span class="r-badge">&#x1F4D8; J. Phys. Chem. C 2022</span>
+              </div>
+              <div>
+                <div class="r-pub-meta">
+                  <div class="r-org">The Journal of Physical Chemistry C</div>
+                  <a href="https://pubs.acs.org/doi/abs/10.1021/acs.jpcc.2c03156" target="_blank" rel="noopener" class="r-pub-link">DOI ↗</a>
+                </div>
+                <div class="r-title">Machine-Learning-Assisted Acceleration on High-Symmetry Materials Search: Space Group Predictions from Band Structures</div>
+              </div>
+              <div class="r-desc">
+                Deep learning model predicting crystal space groups directly from band structure inputs, dramatically narrowing the materials search space. Achieves 96% accuracy for cubic systems and a 36.9× acceleration in overall search speed.
+              </div>
+              <div class="tags">
+                <span class="tag">Deep Learning</span><span class="tag">Band Structure</span><span class="tag">Crystallography</span><span class="tag">Materials Search</span>
+              </div>
+            </div>
+
+          </div>
+        </div>
+
       </div>
     </div>
   </section>
