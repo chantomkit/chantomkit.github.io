@@ -124,6 +124,40 @@
     }
     @media (max-width: 600px) { .section-nav { display: none; } }
 
+    .back-top {
+      position: fixed;
+      bottom: 1rem;
+      right: 1rem;
+      width: 38px; height: 38px;
+      border-radius: 50%;
+      background: var(--card);
+      border: 1px solid var(--border);
+      box-shadow: var(--shadow);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      color: var(--text-muted);
+      font-size: 0.88rem;
+      z-index: 300;
+      opacity: 0;
+      pointer-events: none;
+      transform: translateY(8px);
+      transition: background var(--t) var(--ease), color var(--t) var(--ease),
+                  border-color var(--t) var(--ease), transform var(--t) var(--ease),
+                  opacity var(--t) var(--ease);
+    }
+    .back-top.visible {
+      opacity: 1;
+      pointer-events: auto;
+      transform: translateY(0);
+    }
+    .back-top:hover {
+      color: var(--accent);
+      border-color: var(--border-hi);
+      transform: scale(1.1);
+    }
+
     .theme-toggle {
       position: fixed;
       top: 1rem;
@@ -168,6 +202,15 @@
       padding: 2.5rem 1.5rem 3rem;
     }
 
+    #hero::after {
+      content: '';
+      position: absolute;
+      bottom: 0; left: 0; right: 0;
+      height: 120px;
+      background: linear-gradient(to bottom, transparent, var(--bg));
+      pointer-events: none;
+      z-index: 2;
+    }
     .hero-canvas {
       position: absolute;
       inset: 0;
@@ -244,12 +287,40 @@
     }
 
     .hero-name {
-      font-size: clamp(0.95rem, 2vw, 1.05rem);
-      font-weight: 600;
+      font-size: clamp(1.9rem, 4vw, 2.8rem);
+      font-weight: 700;
+      letter-spacing: -0.03em;
+      line-height: 1.15;
+      margin-bottom: 0.4rem;
+      animation: fadeUp 0.7s 0.08s ease both;
+    }
+    .hero-tagline {
+      font-size: clamp(0.9rem, 1.8vw, 1rem);
+      font-weight: 500;
       color: var(--text-sub);
       letter-spacing: 0.01em;
       margin-bottom: 1.5rem;
-      animation: fadeUp 0.7s 0.08s ease both;
+      animation: fadeUp 0.7s 0.14s ease both;
+    }
+    @keyframes wave {
+      0%,100% { transform: rotate(0deg); }
+      20%      { transform: rotate(22deg); }
+      40%      { transform: rotate(-10deg); }
+      60%      { transform: rotate(18deg); }
+      80%      { transform: rotate(-6deg); }
+    }
+    .wave-emoji {
+      display: inline-block;
+      transform-origin: 70% 70%;
+      animation: wave 1.8s ease-in-out 0.6s 1 both;
+    }
+    .spin-emoji {
+      display: inline-block;
+      animation: spin 12s linear infinite;
+    }
+    @keyframes spin {
+      from { transform: rotate(0deg); }
+      to   { transform: rotate(360deg); }
     }
     .grad {
       background: linear-gradient(130deg, #0d9488 0%, #14b8a6 50%, #5eead4 100%);
@@ -825,6 +896,11 @@
     </button>
   </div>
 
+  <!-- BACK TO TOP -->
+  <button class="back-top" id="back-top" aria-label="Back to top">
+    <i class="fas fa-arrow-up"></i>
+  </button>
+
   <!-- THEME TOGGLE -->
   <button class="theme-toggle" id="theme-toggle" aria-label="Toggle theme">
     <i class="fas fa-sun icon-sun"></i>
@@ -842,8 +918,8 @@
 
     <div class="hero-body">
 
-      <h1 class="hero-greeting">Hey there, you've found the right corner of the internet — <span class="greeting-aside">Converged nicely.</span></h1>
-      <p class="hero-name">Tom <span class="grad">Chan</span></p>
+      <h1 class="hero-greeting">Hey there <span class="wave-emoji">👋</span> You've stumbled into <span class="grad">Tom Chan</span>'s corner of the internet <span class="spin-emoji">🌏</span></h1>
+      <p class="hero-tagline">Physicist by training, ML practitioner by trade.</p>
 
       <div class="hero-roles">
         <span class="role-pill tesco">
@@ -874,7 +950,7 @@
     <div class="section-wrap">
       <div class="reveal">
         <span class="eyebrow">About</span>
-        <h2 class="section-heading">👋 Who I Am</h2>
+        <h2 class="section-heading">🧑‍💻 Who I Am</h2>
         <div class="underline-bar"></div>
         <div class="about-copy">
           <p>
@@ -1008,7 +1084,7 @@
 
             <div class="r-card reveal reveal-d1">
               <div class="r-header">
-                <div class="r-icon">&#x1F9EC;</div>
+                <div class="r-icon">🎯</div>
                 <span class="r-badge">Accepted &mdash; <a href="https://tais2026.cc/" target="_blank" rel="noopener" style="color:inherit;text-decoration:underline;">TAIS 2026</a></span>
               </div>
               <div>
@@ -1073,7 +1149,7 @@
 
             <div class="r-card reveal reveal-d2">
               <div class="r-header">
-                <div class="r-icon">&#x1F52E;</div>
+                <div class="r-icon">💎</div>
                 <span class="r-badge">&#x1F4D8; J. Phys. Chem. C 2022</span>
               </div>
               <div>
@@ -1256,6 +1332,18 @@
 
     window.addEventListener('scroll', updateNavBtns, { passive: true });
     updateNavBtns();
+
+    // Back to top
+    const backTop = document.getElementById('back-top');
+    window.addEventListener('scroll', () => {
+      backTop.classList.toggle('visible', window.scrollY > 300);
+    }, { passive: true });
+    backTop.addEventListener('click', () => window.scrollTo({ top: 0, behavior: 'smooth' }));
+    const footerEl = document.querySelector('footer');
+    new IntersectionObserver(entries => {
+      const h = entries[0].isIntersecting ? entries[0].boundingClientRect.height : 0;
+      backTop.style.bottom = (h > 0 ? h + 12 : 16) + 'px';
+    }, { threshold: Array.from({length: 101}, (_, i) => i / 100) }).observe(footerEl);
 
     // Theme toggle — default light, persisted in localStorage
     const html = document.documentElement;
