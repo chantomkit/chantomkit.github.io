@@ -986,13 +986,15 @@
             </div>
             <div class="t-group">Personalised Rewards</div>
             <ul class="t-bullets">
-              <li>Own end-to-end production personalised reward systems on Azure ML, from customer scoring through to large-scale allocation across millions of customers.</li>
-              <li>Built an A/B testing and model-variants framework from scratch for statistically robust evaluation against business KPIs, and apply causal ML to inform reward targeting.</li>
+              <li>Own end-to-end production coupon allocation systems on Azure ML serving customers at scale across the UK and Ireland — multi-stage pipelines spanning customer engagement modelling to constrained allocation optimisation.</li>
+              <li>Model incremental treatment effects with causal ML (CATE estimation) alongside customer engagement scores to inform reward targeting and ranking.</li>
+              <li>Built an A/B testing and model-variants framework from scratch for statistically robust evaluation against business KPIs.</li>
+              <li>Built a human-in-the-loop agentic coding workflow (ticket &rarr; plan &rarr; code) that auto-fetches AzureML/Airflow test runs and offline metrics to diagnose and fix failing test cycles through automated PR creation.</li>
             </ul>
             <div class="t-group">Content Personalisation &amp; Ranking</div>
             <ul class="t-bullets">
               <li>Design and own online training and serving pipelines for contextual bandit models powering content personalisation, with configurable update cadences.</li>
-              <li>A/B test ranking models at scale, delivering meaningful CTR uplift over a popularity-based baseline across live traffic.</li>
+              <li>A/B test contextual bandit ranking models at scale, delivering CTR uplift over a popularity-based baseline across live Tesco web traffic.</li>
             </ul>
             <div class="tags">
               <span class="tag">Azure ML</span><span class="tag">Contextual Bandits</span><span class="tag">Causal ML</span><span class="tag">A/B Testing</span><span class="tag">MLflow</span>
@@ -1009,7 +1011,7 @@
             </div>
             <ul class="t-bullets">
               <li>Implemented document intelligence pipelines using Amazon Textract and LLMs (InternVL, LLaMA, GPT-4o), deployed in parallel with the manual underwriting workflow to benchmark processing time and accuracy.</li>
-              <li>Developed golden evaluation datasets and business-defined metrics for entity extraction, achieving <span class="metric">80%+ overall accuracy</span>.</li>
+              <li>Developed golden evaluation datasets and business-defined metrics for entity extraction.</li>
             </ul>
             <div class="tags">
               <span class="tag">LLMs</span><span class="tag">Amazon Textract</span><span class="tag">Document Intelligence</span><span class="tag">Entity Extraction</span><span class="tag">LangChain</span>
@@ -1116,6 +1118,31 @@
               </div>
               <div class="tags">
                 <span class="tag">Mechanistic Interpretability</span><span class="tag">LLM Safety</span><span class="tag">Fine-tuning</span><span class="tag">Llama</span>
+              </div>
+            </div>
+
+          </div>
+        </div>
+
+        <!-- Recommender Systems -->
+        <div class="research-category reveal">
+          <div class="r-cat-label">Recommender Systems</div>
+          <div class="research-grid">
+
+            <div class="r-card reveal reveal-d1">
+              <div class="r-header">
+                <div class="r-icon">&#x1F578;&#xFE0F;</div>
+                <span class="r-badge">&#x1F393; MSc Thesis Research</span>
+              </div>
+              <div>
+                <div class="r-org">Tesco</div>
+                <div class="r-title">Graph Neural Networks for Personalisation</div>
+              </div>
+              <div class="r-desc">
+                Benchmarked GNN-based ranking models (NGCF, LightGCN, GraphSAGE) against a production matrix-factorisation baseline on Tesco's user-item purchase graph, at large scale &mdash; hundreds of thousands of users and tens of millions of edges. Evaluated LightGCN affinity scores in a downstream personalised-offers task and built a GraphSAGE-based sampling strategy for scalable inference, delivering meaningful gains in ranking quality and inference speed over the production baseline. This work directly informed the MSc thesis referenced below.
+              </div>
+              <div class="tags">
+                <span class="tag">GNN</span><span class="tag">LightGCN</span><span class="tag">GraphSAGE</span><span class="tag">NGCF</span><span class="tag">Recommender Systems</span><span class="tag">PyTorch</span>
               </div>
             </div>
 
@@ -1233,6 +1260,7 @@
               <span class="chip">LightGBM</span>
               <span class="chip">XGBoost</span>
               <span class="chip">TensorFlow</span>
+              <span class="chip">Keras</span>
               <span class="chip">JAX</span>
               <span class="chip">PyMC</span>
               <span class="chip">statsmodels</span>
@@ -1256,6 +1284,7 @@
           <div class="skill-row reveal reveal-d3">
             <div class="skill-cat">LLM &amp; NLP</div>
             <div class="chips">
+              <span class="chip">OpenAI API</span>
               <span class="chip">Transformers</span>
               <span class="chip">LangChain</span>
               <span class="chip">Pydantic</span>
@@ -1269,6 +1298,7 @@
               <span class="chip">Python</span>
               <span class="chip">SQL</span>
               <span class="chip">Bash</span>
+              <span class="chip">Agentic Coding</span>
             </div>
           </div>
 
@@ -1280,7 +1310,7 @@
   <!-- FOOTER -->
   <footer>
     <p class="footer-copy">
-      &copy; 2025 <a href="https://github.com/chantomkit">Tom Chan</a>
+      &copy; <span id="footer-year">2025</span> <a href="https://github.com/chantomkit">Tom Chan</a>
     </p>
     <div class="footer-socials">
       <a href="https://github.com/chantomkit" target="_blank" rel="noopener" aria-label="GitHub">
@@ -1293,6 +1323,9 @@
   </footer>
 
   <script>
+    // Footer year
+    document.getElementById('footer-year').textContent = new Date().getFullYear();
+
     // Scroll-driven reveal
     const io = new IntersectionObserver(
       entries => entries.forEach(e => {

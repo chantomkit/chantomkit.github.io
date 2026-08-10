@@ -9,12 +9,8 @@ Personal profile page — pure HTML/CSS/JS, no build step, no framework dependen
 ├── index.html                       # The entire site — edit this to update content
 ├── .nojekyll                        # Tells GitHub Pages to skip Jekyll entirely
 ├── assets/
-│   ├── img/
-│   │   ├── avatar.png               # Profile photo
-│   │   ├── favicon.png              # Browser tab icon (light mode)
-│   │   └── favicon-dark.png         # Browser tab icon (dark mode)
-│   └── files/
-│       └── resume_baseline.pdf      # Resume — linked from the hero and footer
+│   └── img/
+│       └── favicon-32x32.png        # Browser tab icon
 └── README.md
 ```
 
@@ -58,11 +54,8 @@ Everything lives in `index.html`. Edit it directly and push — it goes live imm
 ### Hero section
 
 ```html
-<!-- Status badge text -->
-Open to new opportunities · Right to work in UK
-
-<!-- Name -->
-<h1 class="hero-name">Tom <span class="grad">Chan</span></h1>
+<!-- Greeting / name -->
+<h1 class="hero-greeting">Hey there ... You've stumbled into <span class="grad">Tom Chan</span>'s corner of the internet</h1>
 
 <!-- Current role pills -->
 <span class="role-pill tesco"> ... Data Scientist · Tesco</span>
@@ -73,15 +66,6 @@ Open to new opportunities · Right to work in UK
 ```
 
 To change the role pill colours, edit the CSS variables for `.role-pill.tesco` and `.role-pill.apart`.
-
-### Resume link
-
-The resume is linked in two places. To swap the file:
-1. Replace `assets/files/resume_baseline.pdf` with your new file
-2. Update both `href` references in `index.html` if the filename changes:
-   ```html
-   href="./assets/files/resume_baseline.pdf"
-   ```
 
 ### About section
 
